@@ -1,3 +1,4 @@
+
 <div align="center">
 
 # ⚡ SPARK
@@ -16,33 +17,6 @@ Um projeto fullstack que percorre o ciclo inteiro: interface, banco de dados, da
 
 </div>
 
----
-
-## 🎬 Demonstração
-
-
-
-> 📹 **[ COLE AQUI O LINK OU O VÍDEO DA DEMO ]**
-
----
-
-## 🖼️ Telas
-
-<!-- Salve os prints em docs/screenshots/ e ajuste os nomes abaixo. -->
-
-| Hero com lata 3D | Seletor de sabores |
-|---|---|
-| <img src="docs/screenshots/hero.png" alt="Hero com a lata 3D" width="100%"> | <img src="docs/screenshots/sabores.png" alt="Seletor de sabores por cor" width="100%"> |
-
-| Carrossel de produtos | Histórias de atletas |
-|---|---|
-| <img src="docs/screenshots/produtos.png" alt="Carrossel Energy Drinks" width="100%"> | <img src="docs/screenshots/atletas.png" alt="Seção Além dos Limites" width="100%"> |
-
-| Versão mobile | Rodapé e newsletter |
-|---|---|
-| <img src="docs/screenshots/mobile.png" alt="Layout mobile" width="100%"> | <img src="docs/screenshots/rodape.png" alt="Rodapé com newsletter" width="100%"> |
-
----
 
 ## 📖 Sobre o projeto
 
@@ -68,6 +42,16 @@ Não é uma loja em produção: a marca, os produtos, os clientes e os pedidos s
 
 ---
 
+## 🎬 Demonstração
+
+
+https://github.com/user-attachments/assets/1e42d7c6-f6df-42ed-a5ca-2e907db88fd7
+
+
+
+
+---
+
 ## 🧰 Stack
 
 | Camada | Tecnologia | Para que serve no projeto |
@@ -83,20 +67,21 @@ Não é uma loja em produção: a marca, os produtos, os clientes e os pedidos s
 
 ---
 
+
 ## 🗄️ Modelo de dados
 
 O schema é definido no Prisma e vive em PostgreSQL.
 
-```mermaid
+``` mermaid
 erDiagram
     clientes ||--o{ pedidos : faz
     clientes ||--o{ avaliacoes : escreve
     clientes ||--o{ sessoes : navega
-    pedidos  ||--|{ itens_pedido : contem
-    produtos ||--o{ itens_pedido : "vendido em"
-    sabores  ||--o{ itens_pedido : "sabor de"
+    pedidos ||--|{ itens_pedido : contem
+    produtos ||--o{ itens_pedido : vendido_em
+    sabores ||--o{ itens_pedido : sabor_de
     produtos ||--o{ avaliacoes : recebe
-    pedidos  ||--o| sessoes : "originou"
+    pedidos ||--o| sessoes : originou
 
     clientes {
         int id PK
@@ -104,9 +89,10 @@ erDiagram
         string estado
         string regiao
         string canal_aquisicao
-        bool newsletter
+        boolean newsletter
         datetime data_cadastro
     }
+
     pedidos {
         int id PK
         int cliente_id FK
@@ -119,6 +105,7 @@ erDiagram
         float valor_total
         datetime data_pedido
     }
+
     itens_pedido {
         int id PK
         int pedido_id FK
@@ -127,6 +114,7 @@ erDiagram
         int quantidade
         float preco_unitario
     }
+
     produtos {
         int id PK
         string nome
@@ -134,25 +122,27 @@ erDiagram
         float custo
         float preco_atual
     }
+
     sabores {
         int id PK
         string nome
         string cor_hex
     }
+
     avaliacoes {
         int id PK
         int nota
         string comentario
     }
+
     sessoes {
         int id PK
         string origem
         string dispositivo
-        bool adicionou_carrinho
-        bool converteu
-    }
+        boolean adicionou_carrinho
+        boolean converteu
+    }  
 ```
-
 ---
 
 ## 🎲 Dados simulados (Faker)
@@ -180,15 +170,14 @@ Os dados do banco alimentam um relatório com **6 páginas** e cerca de 40 medid
 | Marketing e funil | Onde o tráfego converte e onde se perde |
 | Operações e satisfação | Cancelamentos e nota dos clientes |
 
-<!-- Salve os prints do Power BI em docs/screenshots/ -->
 
 | Resumo executivo | Vendas |
 |---|---|
-| <img src="docs/screenshots/pbi-resumo.png" alt="Dashboard: resumo executivo" width="100%"> | <img src="docs/screenshots/pbi-vendas.png" alt="Dashboard: vendas" width="100%"> |
+| <img width="990" height="553" alt="Captura de tela 2026-10-13 231752" src="https://github.com/user-attachments/assets/d0e52524-2451-4df0-9d68-0457ca3f7038" />|<img width="997" height="558" alt="Captura de tela 2026-10-13 231848" src="https://github.com/user-attachments/assets/da3e7ed6-5e29-4624-94ef-e597e13883bd" />|    
 
-| Produtos e sabores | Marketing e funil |
+| Produtos e sabores |Operações e Satisfação|
 |---|---|
-| <img src="docs/screenshots/pbi-produtos.png" alt="Dashboard: produtos e sabores" width="100%"> | <img src="docs/screenshots/pbi-marketing.png" alt="Dashboard: marketing e funil" width="100%"> |
+| <img width="988" height="547" alt="Captura de tela 2026-10-13 231906" src="https://github.com/user-attachments/assets/975e5fd3-916b-479b-8528-f71287297521" />| <img width="939" height="529" alt="Captura de tela 2026-10-13 232038" src="https://github.com/user-attachments/assets/3813b3ac-79ac-435f-9f4d-25515cd6dc86" />|
 
 ---
 
@@ -203,7 +192,7 @@ Os dados do banco alimentam um relatório com **6 páginas** e cerca de 40 medid
 
 ```bash
 # 1. Clone o repositório
-git clone https://github.com/SEU-USUARIO/spark.git
+git clone https://github.com/Cjr-pjs/ProjetoSpark
 cd spark
 
 # 2. Instale as dependências
@@ -223,6 +212,7 @@ npx prisma db seed
 npm run dev
 ```
 
+
 Acesse [http://localhost:3000](http://localhost:3000).
 
 > Ajuste os comandos de seed e de execução se os scripts do seu `package.json` tiverem outros nomes.
@@ -239,13 +229,13 @@ npx prisma studio
 
 Feito por **Junior**, estudante de Análise e Desenvolvimento de Sistemas.
 
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/SEU-PERFIL)
-[![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/SEU-USUARIO)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](www.linkedin.com/in/cleudson-junior-515b933a5)
+[![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Cjr-pjs)
 
 ---
 
 <div align="center">
 
-⚠️ Projeto educacional. SPARK é uma marca fictícia e todos os dados são gerados artificialmente.
+⚠️ Projeto Experimental. SPARK é uma marca fictícia e todos os dados são gerados artificialmente.
 
 </div>
