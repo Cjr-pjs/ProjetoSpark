@@ -1,0 +1,151 @@
+// use prisma-8
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  username  String?
+  name      String?
+  posts     Post[]
+  createdAt TimestamptzString @default(now())
+  updatedAt temporal.updatedAtString()
+}
+
+model Post {
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String?
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  Int
+  createdAt TimestamptzString @default(now())
+  updatedAt temporal.updatedAtString()
+}
+
+// ============================================================================
+// LOJA SPARK â€” tabelas de vendas/navegaÃ§Ã£o (dados simulados via prisma/seed.ts)
+// Datas usam TimestamptzString/DateString: colunas timestamptz/date reais no
+// Postgres, lidas como texto ISO (o Node 24 nÃ£o tem Temporal global).
+// ============================================================================
+
+enum CategoriaProduto {
+  @@type("pg/text@1")
+  EnergyDrink = "Energy Drink"
+  Pack        = "Pack"
+  Combo       = "Combo"
+  Snack       = "Snack"
+}
+
+enum StatusPedido {
+  @@type("pg/text@1")
+  Pago        = "Pago"
+  Enviado     = "Enviado"
+  Entregue    = "Entregue"
+  Cancelado   = "Cancelado"
+  Reembolsado = "Reembolsado"
+}
+
+model Sabor {
+  id     Int    @id @default(autoincrement())
+  nome   String @unique
+  corHex String @map("cor_hex")
+
+  @@map("sabores")
+}
+
+model Produto {
+  id          Int              @id @default(autoincrement())
+  nome        String           @unique
+  categoria   CategoriaProduto
+  qtdUnidades Int              @map("qtd_unidades")
+  precoCheio  Numeric(10, 2)   @map("preco_cheio")
+  precoAtual  Numeric(10, 2)   @map("preco_atual")
+  custo       Numeric(10, 2)
+  temSabor    Boolean          @map("tem_sabor")
+
+  @@map("produtos")
+}
+
+model Cliente {
+  id             Int               @id @default(autoincrement())
+  nome           String
+  email          String            @unique
+  dataNascimento DateString        @map("data_nascimento")
+  cidade         String
+  estado         String
+  regiao         String
+  canalAquisicao String            @map("canal_aquisicao")
+  newsletter     Boolean
+  dataCadastro   TimestamptzString @map("data_cadastro")
+
+  @@index([estado])
+  @@map("clientes")
+}
+
+model Pedido {
+  id             Int               @id @default(autoincrement())
+  clienteId      Int               @map("cliente_id")
+  cliente        Cliente           @relation(fields: [clienteId], references: [id])
+  dataPedido     TimestamptzString @map("data_pedido")
+  status         StatusPedido
+  formaPagamento String            @map("forma_pagamento")
+  cupom          String?
+  valorItens     Numeric(10, 2)    @map("valor_itens")
+  valorFrete     Numeric(10, 2)    @map("valor_frete")
+  valorDesconto  Numeric(10, 2)    @map("valor_desconto")
+  valorTotal     Numeric(10, 2)    @map("valor_total")
+
+  @@index([dataPedido])
+  @@index([clienteId])
+  @@map("pedidos")
+}
+
+model ItemPedido {
+  id            Int            @id @default(autoincrement())
+  pedidoId      Int            @map("pedido_id")
+  pedido        Pedido         @relation(fields: [pedidoId], references: [id], onDelete: Cascade)
+  produtoId     Int            @map("produto_id")
+  produto       Produto        @relation(fields: [produtoId], references: [id])
+  saborId       Int?           @map("sabor_id")
+  sabor         Sabor?         @relation(fields: [saborId], references: [id])
+  quantidade    Int
+  precoUnitario Numeric(10, 2) @map("preco_unitario")
+
+  @@index([pedidoId])
+  @@index([produtoId])
+  @@map("itens_pedido")
+}
+
+model Sessao {
+  id                BigInt            @id @default(autoincrement())
+  dataHora          TimestamptzString @map("data_hora")
+  clienteId         Int?              @map("cliente_id")
+  cliente           Cliente?          @relation(fields: [clienteId], references: [id])
+  origem            String
+  dispositivo       String
+  paginasVistas     Int               @map("paginas_vistas")
+  duracaoSeg        Int               @map("duracao_seg")
+  adicionouCarrinho Boolean           @map("adicionou_carrinho")
+  converteu         Boolean
+  pedidoId          Int?              @map("pedido_id")
+  pedido            Pedido?           @relation(fields: [pedidoId], references: [id])
+
+  @@index([dataHora])
+  @@map("sessoes")
+}
+
+model Avaliacao {
+  id            Int               @id @default(autoincrement())
+  pedidoId      Int               @map("pedido_id")
+  pedido        Pedido            @relation(fields: [pedidoId], references: [id], onDelete: Cascade)
+  produtoId     Int               @map("produto_id")
+  produto       Produto           @relation(fields: [produtoId], references: [id])
+  clienteId     Int               @map("cliente_id")
+  cliente       Cliente           @relation(fields: [clienteId], references: [id])
+  nota          Int
+  comentario    String?
+  dataAvaliacao TimestamptzString @map("data_avaliacao")
+
+  @@unique([pedidoId, produtoId])
+  @@index([produtoId])
+  @@check(expression: "nota BETWEEN 1 AND 5", name: "avaliacoes_nota_1_a_5")
+  @@map("avaliacoes")
+}

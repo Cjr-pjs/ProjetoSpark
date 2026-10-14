@@ -1,0 +1,1507 @@
+[
+  {
+    "id": "schema.public",
+    "label": "Create schema \"public\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres"
+    },
+    "precheck": [],
+    "execute": [
+      {
+        "description": "Create schema \"public\"",
+        "sql": "CREATE SCHEMA IF NOT EXISTS \"public\"",
+        "params": []
+      }
+    ],
+    "postcheck": []
+  },
+  {
+    "id": "table.Post",
+    "label": "Create table \"Post\"",
+    "summary": "Creates table \"Post\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "Post"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"Post\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Post\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"Post\"",
+        "sql": "CREATE TABLE \"public\".\"Post\" (\n  \"authorId\" int4 NOT NULL,\n  \"content\" text,\n  \"createdAt\" timestamptz DEFAULT (now()) NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  \"title\" text NOT NULL,\n  \"updatedAt\" timestamptz NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"Post\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Post\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.User",
+    "label": "Create table \"User\"",
+    "summary": "Creates table \"User\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "User"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"User\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"User\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"User\"",
+        "sql": "CREATE TABLE \"public\".\"User\" (\n  \"createdAt\" timestamptz DEFAULT (now()) NOT NULL,\n  \"email\" text NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  \"name\" text,\n  \"updatedAt\" timestamptz NOT NULL,\n  \"username\" text,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"User\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"User\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.avaliacoes",
+    "label": "Create table \"avaliacoes\"",
+    "summary": "Creates table \"avaliacoes\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "avaliacoes"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"avaliacoes\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"avaliacoes\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"avaliacoes\"",
+        "sql": "CREATE TABLE \"public\".\"avaliacoes\" (\n  \"cliente_id\" int4 NOT NULL,\n  \"comentario\" text,\n  \"data_avaliacao\" timestamptz NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  \"nota\" int4 NOT NULL,\n  \"pedido_id\" int4 NOT NULL,\n  \"produto_id\" int4 NOT NULL,\n  PRIMARY KEY (\"id\"),\n  CONSTRAINT \"avaliacoes_nota_1_a_5_9e21ccee\" CHECK (nota BETWEEN 1 AND 5)\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"avaliacoes\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"avaliacoes\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.clientes",
+    "label": "Create table \"clientes\"",
+    "summary": "Creates table \"clientes\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "clientes"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"clientes\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"clientes\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"clientes\"",
+        "sql": "CREATE TABLE \"public\".\"clientes\" (\n  \"canal_aquisicao\" text NOT NULL,\n  \"cidade\" text NOT NULL,\n  \"data_cadastro\" timestamptz NOT NULL,\n  \"data_nascimento\" date NOT NULL,\n  \"email\" text NOT NULL,\n  \"estado\" text NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  \"newsletter\" bool NOT NULL,\n  \"nome\" text NOT NULL,\n  \"regiao\" text NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"clientes\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"clientes\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.itens_pedido",
+    "label": "Create table \"itens_pedido\"",
+    "summary": "Creates table \"itens_pedido\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "itens_pedido"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"itens_pedido\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"itens_pedido\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"itens_pedido\"",
+        "sql": "CREATE TABLE \"public\".\"itens_pedido\" (\n  \"id\" SERIAL NOT NULL,\n  \"pedido_id\" int4 NOT NULL,\n  \"preco_unitario\" numeric(10,2) NOT NULL,\n  \"produto_id\" int4 NOT NULL,\n  \"quantidade\" int4 NOT NULL,\n  \"sabor_id\" int4,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"itens_pedido\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"itens_pedido\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.pedidos",
+    "label": "Create table \"pedidos\"",
+    "summary": "Creates table \"pedidos\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "pedidos"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"pedidos\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"pedidos\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"pedidos\"",
+        "sql": "CREATE TABLE \"public\".\"pedidos\" (\n  \"cliente_id\" int4 NOT NULL,\n  \"cupom\" text,\n  \"data_pedido\" timestamptz NOT NULL,\n  \"forma_pagamento\" text NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  \"status\" text NOT NULL,\n  \"valor_desconto\" numeric(10,2) NOT NULL,\n  \"valor_frete\" numeric(10,2) NOT NULL,\n  \"valor_itens\" numeric(10,2) NOT NULL,\n  \"valor_total\" numeric(10,2) NOT NULL,\n  PRIMARY KEY (\"id\"),\n  CONSTRAINT \"pedidos_status_check_15f7032d\" CHECK (\"status\" IN ('Pago', 'Enviado', 'Entregue', 'Cancelado', 'Reembolsado'))\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"pedidos\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"pedidos\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.produtos",
+    "label": "Create table \"produtos\"",
+    "summary": "Creates table \"produtos\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "produtos"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"produtos\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"produtos\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"produtos\"",
+        "sql": "CREATE TABLE \"public\".\"produtos\" (\n  \"categoria\" text NOT NULL,\n  \"custo\" numeric(10,2) NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  \"nome\" text NOT NULL,\n  \"preco_atual\" numeric(10,2) NOT NULL,\n  \"preco_cheio\" numeric(10,2) NOT NULL,\n  \"qtd_unidades\" int4 NOT NULL,\n  \"tem_sabor\" bool NOT NULL,\n  PRIMARY KEY (\"id\"),\n  CONSTRAINT \"produtos_categoria_check_b264025d\" CHECK (\"categoria\" IN ('Energy Drink', 'Pack', 'Combo', 'Snack'))\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"produtos\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"produtos\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.sabores",
+    "label": "Create table \"sabores\"",
+    "summary": "Creates table \"sabores\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "sabores"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"sabores\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"sabores\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"sabores\"",
+        "sql": "CREATE TABLE \"public\".\"sabores\" (\n  \"cor_hex\" text NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  \"nome\" text NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"sabores\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"sabores\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.sessoes",
+    "label": "Create table \"sessoes\"",
+    "summary": "Creates table \"sessoes\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "sessoes"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"sessoes\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"sessoes\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"sessoes\"",
+        "sql": "CREATE TABLE \"public\".\"sessoes\" (\n  \"adicionou_carrinho\" bool NOT NULL,\n  \"cliente_id\" int4,\n  \"converteu\" bool NOT NULL,\n  \"data_hora\" timestamptz NOT NULL,\n  \"dispositivo\" text NOT NULL,\n  \"duracao_seg\" int4 NOT NULL,\n  \"id\" BIGSERIAL NOT NULL,\n  \"origem\" text NOT NULL,\n  \"paginas_vistas\" int4 NOT NULL,\n  \"pedido_id\" int4,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"sessoes\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"sessoes\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unique.User.User_email_key",
+    "label": "Add unique constraint on \"User\" (email)",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "User_email_key",
+        "table": "User"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"User_email_key\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "User_email_key",
+          "public",
+          "\"public\".\"User\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add unique constraint \"User_email_key\"",
+        "sql": "ALTER TABLE \"public\".\"User\" ADD CONSTRAINT \"User_email_key\" UNIQUE (\"email\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"User_email_key\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "User_email_key",
+          "public",
+          "\"public\".\"User\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unique.avaliacoes.avaliacoes_pedido_id_produto_id_key",
+    "label": "Add unique constraint on \"avaliacoes\" (pedido_id, produto_id)",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "avaliacoes_pedido_id_produto_id_key",
+        "table": "avaliacoes"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"avaliacoes_pedido_id_produto_id_key\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "avaliacoes_pedido_id_produto_id_key",
+          "public",
+          "\"public\".\"avaliacoes\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add unique constraint \"avaliacoes_pedido_id_produto_id_key\"",
+        "sql": "ALTER TABLE \"public\".\"avaliacoes\" ADD CONSTRAINT \"avaliacoes_pedido_id_produto_id_key\" UNIQUE (\"pedido_id\", \"produto_id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"avaliacoes_pedido_id_produto_id_key\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "avaliacoes_pedido_id_produto_id_key",
+          "public",
+          "\"public\".\"avaliacoes\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unique.clientes.clientes_email_key",
+    "label": "Add unique constraint on \"clientes\" (email)",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "clientes_email_key",
+        "table": "clientes"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"clientes_email_key\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "clientes_email_key",
+          "public",
+          "\"public\".\"clientes\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add unique constraint \"clientes_email_key\"",
+        "sql": "ALTER TABLE \"public\".\"clientes\" ADD CONSTRAINT \"clientes_email_key\" UNIQUE (\"email\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"clientes_email_key\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "clientes_email_key",
+          "public",
+          "\"public\".\"clientes\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unique.produtos.produtos_nome_key",
+    "label": "Add unique constraint on \"produtos\" (nome)",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "produtos_nome_key",
+        "table": "produtos"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"produtos_nome_key\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "produtos_nome_key",
+          "public",
+          "\"public\".\"produtos\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add unique constraint \"produtos_nome_key\"",
+        "sql": "ALTER TABLE \"public\".\"produtos\" ADD CONSTRAINT \"produtos_nome_key\" UNIQUE (\"nome\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"produtos_nome_key\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "produtos_nome_key",
+          "public",
+          "\"public\".\"produtos\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unique.sabores.sabores_nome_key",
+    "label": "Add unique constraint on \"sabores\" (nome)",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "sabores_nome_key",
+        "table": "sabores"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"sabores_nome_key\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "sabores_nome_key",
+          "public",
+          "\"public\".\"sabores\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add unique constraint \"sabores_nome_key\"",
+        "sql": "ALTER TABLE \"public\".\"sabores\" ADD CONSTRAINT \"sabores_nome_key\" UNIQUE (\"nome\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"sabores_nome_key\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "sabores_nome_key",
+          "public",
+          "\"public\".\"sabores\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.Post.Post_authorId_idx_e47547ed",
+    "label": "Create index \"Post_authorId_idx_e47547ed\" on \"Post\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "Post_authorId_idx_e47547ed",
+        "table": "Post"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"Post_authorId_idx_e47547ed\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Post_authorId_idx_e47547ed\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"Post_authorId_idx_e47547ed\"",
+        "sql": "CREATE INDEX \"Post_authorId_idx_e47547ed\" ON \"public\".\"Post\" (\"authorId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"Post_authorId_idx_e47547ed\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Post_authorId_idx_e47547ed\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.avaliacoes.avaliacoes_cliente_id_idx_9196b84e",
+    "label": "Create index \"avaliacoes_cliente_id_idx_9196b84e\" on \"avaliacoes\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "avaliacoes_cliente_id_idx_9196b84e",
+        "table": "avaliacoes"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"avaliacoes_cliente_id_idx_9196b84e\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"avaliacoes_cliente_id_idx_9196b84e\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"avaliacoes_cliente_id_idx_9196b84e\"",
+        "sql": "CREATE INDEX \"avaliacoes_cliente_id_idx_9196b84e\" ON \"public\".\"avaliacoes\" (\"cliente_id\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"avaliacoes_cliente_id_idx_9196b84e\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"avaliacoes_cliente_id_idx_9196b84e\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.avaliacoes.avaliacoes_pedido_id_idx_57130803",
+    "label": "Create index \"avaliacoes_pedido_id_idx_57130803\" on \"avaliacoes\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "avaliacoes_pedido_id_idx_57130803",
+        "table": "avaliacoes"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"avaliacoes_pedido_id_idx_57130803\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"avaliacoes_pedido_id_idx_57130803\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"avaliacoes_pedido_id_idx_57130803\"",
+        "sql": "CREATE INDEX \"avaliacoes_pedido_id_idx_57130803\" ON \"public\".\"avaliacoes\" (\"pedido_id\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"avaliacoes_pedido_id_idx_57130803\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"avaliacoes_pedido_id_idx_57130803\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.avaliacoes.avaliacoes_produto_id_idx_63485217",
+    "label": "Create index \"avaliacoes_produto_id_idx_63485217\" on \"avaliacoes\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "avaliacoes_produto_id_idx_63485217",
+        "table": "avaliacoes"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"avaliacoes_produto_id_idx_63485217\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"avaliacoes_produto_id_idx_63485217\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"avaliacoes_produto_id_idx_63485217\"",
+        "sql": "CREATE INDEX \"avaliacoes_produto_id_idx_63485217\" ON \"public\".\"avaliacoes\" (\"produto_id\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"avaliacoes_produto_id_idx_63485217\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"avaliacoes_produto_id_idx_63485217\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.clientes.clientes_estado_idx_c74e5888",
+    "label": "Create index \"clientes_estado_idx_c74e5888\" on \"clientes\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "clientes_estado_idx_c74e5888",
+        "table": "clientes"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"clientes_estado_idx_c74e5888\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"clientes_estado_idx_c74e5888\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"clientes_estado_idx_c74e5888\"",
+        "sql": "CREATE INDEX \"clientes_estado_idx_c74e5888\" ON \"public\".\"clientes\" (\"estado\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"clientes_estado_idx_c74e5888\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"clientes_estado_idx_c74e5888\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.itens_pedido.itens_pedido_pedido_id_idx_57130803",
+    "label": "Create index \"itens_pedido_pedido_id_idx_57130803\" on \"itens_pedido\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "itens_pedido_pedido_id_idx_57130803",
+        "table": "itens_pedido"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"itens_pedido_pedido_id_idx_57130803\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"itens_pedido_pedido_id_idx_57130803\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"itens_pedido_pedido_id_idx_57130803\"",
+        "sql": "CREATE INDEX \"itens_pedido_pedido_id_idx_57130803\" ON \"public\".\"itens_pedido\" (\"pedido_id\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"itens_pedido_pedido_id_idx_57130803\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"itens_pedido_pedido_id_idx_57130803\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.itens_pedido.itens_pedido_produto_id_idx_63485217",
+    "label": "Create index \"itens_pedido_produto_id_idx_63485217\" on \"itens_pedido\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "itens_pedido_produto_id_idx_63485217",
+        "table": "itens_pedido"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"itens_pedido_produto_id_idx_63485217\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"itens_pedido_produto_id_idx_63485217\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"itens_pedido_produto_id_idx_63485217\"",
+        "sql": "CREATE INDEX \"itens_pedido_produto_id_idx_63485217\" ON \"public\".\"itens_pedido\" (\"produto_id\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"itens_pedido_produto_id_idx_63485217\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"itens_pedido_produto_id_idx_63485217\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.itens_pedido.itens_pedido_sabor_id_idx_32d5dd60",
+    "label": "Create index \"itens_pedido_sabor_id_idx_32d5dd60\" on \"itens_pedido\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "itens_pedido_sabor_id_idx_32d5dd60",
+        "table": "itens_pedido"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"itens_pedido_sabor_id_idx_32d5dd60\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"itens_pedido_sabor_id_idx_32d5dd60\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"itens_pedido_sabor_id_idx_32d5dd60\"",
+        "sql": "CREATE INDEX \"itens_pedido_sabor_id_idx_32d5dd60\" ON \"public\".\"itens_pedido\" (\"sabor_id\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"itens_pedido_sabor_id_idx_32d5dd60\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"itens_pedido_sabor_id_idx_32d5dd60\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.pedidos.pedidos_cliente_id_idx_9196b84e",
+    "label": "Create index \"pedidos_cliente_id_idx_9196b84e\" on \"pedidos\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "pedidos_cliente_id_idx_9196b84e",
+        "table": "pedidos"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"pedidos_cliente_id_idx_9196b84e\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"pedidos_cliente_id_idx_9196b84e\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"pedidos_cliente_id_idx_9196b84e\"",
+        "sql": "CREATE INDEX \"pedidos_cliente_id_idx_9196b84e\" ON \"public\".\"pedidos\" (\"cliente_id\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"pedidos_cliente_id_idx_9196b84e\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"pedidos_cliente_id_idx_9196b84e\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.pedidos.pedidos_data_pedido_idx_c3d404a9",
+    "label": "Create index \"pedidos_data_pedido_idx_c3d404a9\" on \"pedidos\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "pedidos_data_pedido_idx_c3d404a9",
+        "table": "pedidos"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"pedidos_data_pedido_idx_c3d404a9\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"pedidos_data_pedido_idx_c3d404a9\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"pedidos_data_pedido_idx_c3d404a9\"",
+        "sql": "CREATE INDEX \"pedidos_data_pedido_idx_c3d404a9\" ON \"public\".\"pedidos\" (\"data_pedido\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"pedidos_data_pedido_idx_c3d404a9\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"pedidos_data_pedido_idx_c3d404a9\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.sessoes.sessoes_cliente_id_idx_9196b84e",
+    "label": "Create index \"sessoes_cliente_id_idx_9196b84e\" on \"sessoes\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "sessoes_cliente_id_idx_9196b84e",
+        "table": "sessoes"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"sessoes_cliente_id_idx_9196b84e\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"sessoes_cliente_id_idx_9196b84e\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"sessoes_cliente_id_idx_9196b84e\"",
+        "sql": "CREATE INDEX \"sessoes_cliente_id_idx_9196b84e\" ON \"public\".\"sessoes\" (\"cliente_id\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"sessoes_cliente_id_idx_9196b84e\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"sessoes_cliente_id_idx_9196b84e\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.sessoes.sessoes_data_hora_idx_e0722461",
+    "label": "Create index \"sessoes_data_hora_idx_e0722461\" on \"sessoes\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "sessoes_data_hora_idx_e0722461",
+        "table": "sessoes"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"sessoes_data_hora_idx_e0722461\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"sessoes_data_hora_idx_e0722461\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"sessoes_data_hora_idx_e0722461\"",
+        "sql": "CREATE INDEX \"sessoes_data_hora_idx_e0722461\" ON \"public\".\"sessoes\" (\"data_hora\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"sessoes_data_hora_idx_e0722461\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"sessoes_data_hora_idx_e0722461\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.sessoes.sessoes_pedido_id_idx_57130803",
+    "label": "Create index \"sessoes_pedido_id_idx_57130803\" on \"sessoes\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "sessoes_pedido_id_idx_57130803",
+        "table": "sessoes"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"sessoes_pedido_id_idx_57130803\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"sessoes_pedido_id_idx_57130803\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"sessoes_pedido_id_idx_57130803\"",
+        "sql": "CREATE INDEX \"sessoes_pedido_id_idx_57130803\" ON \"public\".\"sessoes\" (\"pedido_id\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"sessoes_pedido_id_idx_57130803\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"sessoes_pedido_id_idx_57130803\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.Post.Post_authorId_fkey",
+    "label": "Add foreign key \"Post_authorId_fkey\" on \"Post\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "Post_authorId_fkey",
+        "table": "Post"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"Post_authorId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Post_authorId_fkey",
+          "public",
+          "\"public\".\"Post\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"Post_authorId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"Post\"\nADD CONSTRAINT \"Post_authorId_fkey\"\nFOREIGN KEY (\"authorId\")\nREFERENCES \"public\".\"User\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"Post_authorId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Post_authorId_fkey",
+          "public",
+          "\"public\".\"Post\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.avaliacoes.avaliacoes_pedido_id_fkey",
+    "label": "Add foreign key \"avaliacoes_pedido_id_fkey\" on \"avaliacoes\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "avaliacoes_pedido_id_fkey",
+        "table": "avaliacoes"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"avaliacoes_pedido_id_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "avaliacoes_pedido_id_fkey",
+          "public",
+          "\"public\".\"avaliacoes\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"avaliacoes_pedido_id_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"avaliacoes\"\nADD CONSTRAINT \"avaliacoes_pedido_id_fkey\"\nFOREIGN KEY (\"pedido_id\")\nREFERENCES \"public\".\"pedidos\" (\"id\")\nON DELETE CASCADE"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"avaliacoes_pedido_id_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "avaliacoes_pedido_id_fkey",
+          "public",
+          "\"public\".\"avaliacoes\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.avaliacoes.avaliacoes_produto_id_fkey",
+    "label": "Add foreign key \"avaliacoes_produto_id_fkey\" on \"avaliacoes\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "avaliacoes_produto_id_fkey",
+        "table": "avaliacoes"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"avaliacoes_produto_id_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "avaliacoes_produto_id_fkey",
+          "public",
+          "\"public\".\"avaliacoes\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"avaliacoes_produto_id_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"avaliacoes\"\nADD CONSTRAINT \"avaliacoes_produto_id_fkey\"\nFOREIGN KEY (\"produto_id\")\nREFERENCES \"public\".\"produtos\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"avaliacoes_produto_id_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "avaliacoes_produto_id_fkey",
+          "public",
+          "\"public\".\"avaliacoes\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.avaliacoes.avaliacoes_cliente_id_fkey",
+    "label": "Add foreign key \"avaliacoes_cliente_id_fkey\" on \"avaliacoes\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "avaliacoes_cliente_id_fkey",
+        "table": "avaliacoes"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"avaliacoes_cliente_id_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "avaliacoes_cliente_id_fkey",
+          "public",
+          "\"public\".\"avaliacoes\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"avaliacoes_cliente_id_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"avaliacoes\"\nADD CONSTRAINT \"avaliacoes_cliente_id_fkey\"\nFOREIGN KEY (\"cliente_id\")\nREFERENCES \"public\".\"clientes\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"avaliacoes_cliente_id_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "avaliacoes_cliente_id_fkey",
+          "public",
+          "\"public\".\"avaliacoes\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.itens_pedido.itens_pedido_pedido_id_fkey",
+    "label": "Add foreign key \"itens_pedido_pedido_id_fkey\" on \"itens_pedido\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "itens_pedido_pedido_id_fkey",
+        "table": "itens_pedido"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"itens_pedido_pedido_id_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "itens_pedido_pedido_id_fkey",
+          "public",
+          "\"public\".\"itens_pedido\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"itens_pedido_pedido_id_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"itens_pedido\"\nADD CONSTRAINT \"itens_pedido_pedido_id_fkey\"\nFOREIGN KEY (\"pedido_id\")\nREFERENCES \"public\".\"pedidos\" (\"id\")\nON DELETE CASCADE"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"itens_pedido_pedido_id_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "itens_pedido_pedido_id_fkey",
+          "public",
+          "\"public\".\"itens_pedido\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.itens_pedido.itens_pedido_produto_id_fkey",
+    "label": "Add foreign key \"itens_pedido_produto_id_fkey\" on \"itens_pedido\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "itens_pedido_produto_id_fkey",
+        "table": "itens_pedido"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"itens_pedido_produto_id_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "itens_pedido_produto_id_fkey",
+          "public",
+          "\"public\".\"itens_pedido\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"itens_pedido_produto_id_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"itens_pedido\"\nADD CONSTRAINT \"itens_pedido_produto_id_fkey\"\nFOREIGN KEY (\"produto_id\")\nREFERENCES \"public\".\"produtos\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"itens_pedido_produto_id_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "itens_pedido_produto_id_fkey",
+          "public",
+          "\"public\".\"itens_pedido\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.itens_pedido.itens_pedido_sabor_id_fkey",
+    "label": "Add foreign key \"itens_pedido_sabor_id_fkey\" on \"itens_pedido\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "itens_pedido_sabor_id_fkey",
+        "table": "itens_pedido"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"itens_pedido_sabor_id_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "itens_pedido_sabor_id_fkey",
+          "public",
+          "\"public\".\"itens_pedido\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"itens_pedido_sabor_id_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"itens_pedido\"\nADD CONSTRAINT \"itens_pedido_sabor_id_fkey\"\nFOREIGN KEY (\"sabor_id\")\nREFERENCES \"public\".\"sabores\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"itens_pedido_sabor_id_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "itens_pedido_sabor_id_fkey",
+          "public",
+          "\"public\".\"itens_pedido\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.pedidos.pedidos_cliente_id_fkey",
+    "label": "Add foreign key \"pedidos_cliente_id_fkey\" on \"pedidos\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "pedidos_cliente_id_fkey",
+        "table": "pedidos"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"pedidos_cliente_id_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "pedidos_cliente_id_fkey",
+          "public",
+          "\"public\".\"pedidos\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"pedidos_cliente_id_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"pedidos\"\nADD CONSTRAINT \"pedidos_cliente_id_fkey\"\nFOREIGN KEY (\"cliente_id\")\nREFERENCES \"public\".\"clientes\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"pedidos_cliente_id_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "pedidos_cliente_id_fkey",
+          "public",
+          "\"public\".\"pedidos\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.sessoes.sessoes_cliente_id_fkey",
+    "label": "Add foreign key \"sessoes_cliente_id_fkey\" on \"sessoes\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "sessoes_cliente_id_fkey",
+        "table": "sessoes"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"sessoes_cliente_id_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "sessoes_cliente_id_fkey",
+          "public",
+          "\"public\".\"sessoes\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"sessoes_cliente_id_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"sessoes\"\nADD CONSTRAINT \"sessoes_cliente_id_fkey\"\nFOREIGN KEY (\"cliente_id\")\nREFERENCES \"public\".\"clientes\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"sessoes_cliente_id_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "sessoes_cliente_id_fkey",
+          "public",
+          "\"public\".\"sessoes\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.sessoes.sessoes_pedido_id_fkey",
+    "label": "Add foreign key \"sessoes_pedido_id_fkey\" on \"sessoes\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "sessoes_pedido_id_fkey",
+        "table": "sessoes"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"sessoes_pedido_id_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "sessoes_pedido_id_fkey",
+          "public",
+          "\"public\".\"sessoes\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"sessoes_pedido_id_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"sessoes\"\nADD CONSTRAINT \"sessoes_pedido_id_fkey\"\nFOREIGN KEY (\"pedido_id\")\nREFERENCES \"public\".\"pedidos\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"sessoes_pedido_id_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "sessoes_pedido_id_fkey",
+          "public",
+          "\"public\".\"sessoes\""
+        ]
+      }
+    ]
+  }
+]
